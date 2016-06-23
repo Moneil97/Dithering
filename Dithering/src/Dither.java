@@ -34,24 +34,14 @@ public class Dither {
 
 		for (int y = 0; y < height; y++) {
 			int offset = 0;
-			int last =0;
 			for (int x = 0; x < width; x++) {
 				int val = RGBToGrayValue(originalPixels[y][x]) + offset;
 				if (val > 127){
 					pixels[y][x] = WHITE;
-					if (last == 0){
-						offset = 0;
-						last = 1;
-					}
-						
 					offset = (val-255);
 				}
 				else{
 					pixels[y][x] = BLACK;
-					if (last == 1){
-						offset = 0;
-						last = 0;
-					}
 					offset = val;
 				}
 			}
