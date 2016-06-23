@@ -1,5 +1,4 @@
 import java.awt.Color;
-import java.util.Arrays;
 
 public class Dither {
 
@@ -24,9 +23,41 @@ public class Dither {
 				pixels[y][x] = RGBToGrayValue(originalPixels[y][x]) > 127 ? WHITE : BLACK;
 			}
 		}
-		System.out.println(Arrays.toString(pixels[150]));
-		System.out.println(BLACK);
 		return pixels;
 	}
+	
+	public static int[][] toBWSimpleDither(int[][] originalPixels) {
+		int[][] pixels = originalPixels;
 
+		int height = originalPixels.length;
+		int width = originalPixels[0].length;
+
+		for (int y = 0; y < height; y++) {
+			int offset = 0;
+			int last =0;
+			for (int x = 0; x < width; x++) {
+				int val = RGBToGrayValue(originalPixels[y][x]) + offset;
+				if (val > 127){
+					pixels[y][x] = WHITE;
+					if (last == 0){
+						offset = 0;
+						last = 1;
+					}
+						
+					offset = (val-255);
+				}
+				else{
+					pixels[y][x] = BLACK;
+					if (last == 1){
+						offset = 0;
+						last = 0;
+					}
+					offset = val;
+				}
+			}
+		}
+		return pixels;
+	}
+	
+	
 }
