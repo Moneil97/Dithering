@@ -25,7 +25,7 @@ public class Dither {
 		}
 		return pixels;
 	}
-	
+
 	public static int[][] toBWSimpleDither(int[][] originalPixels) {
 		int[][] pixels = originalPixels;
 
@@ -36,11 +36,10 @@ public class Dither {
 			int offset = 0;
 			for (int x = 0; x < width; x++) {
 				int val = RGBToGrayValue(originalPixels[y][x]) + offset;
-				if (val > 127){
+				if (val > 127) {
 					pixels[y][x] = WHITE;
-					offset = (val-255);
-				}
-				else{
+					offset = (val - 255);
+				} else {
 					pixels[y][x] = BLACK;
 					offset = val;
 				}
@@ -48,6 +47,40 @@ public class Dither {
 		}
 		return pixels;
 	}
-	
-	
+
+	public static int[][] toBWFloydSteinbergDither(int[][] originalPixels) {
+
+		int height = originalPixels.length;
+		int width = originalPixels[0].length;
+
+		int[][] pixels = originalPixels;
+		int[][] offset = new int[height][width];
+
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				int val = RGBToGrayValue(originalPixels[y][x]) + offset[y][x];
+				int offVal = 0;
+				if (val > 127) {
+					pixels[y][x] = WHITE;
+					offVal = (val - 255);
+				} else {
+					pixels[y][x] = BLACK;
+					offVal = val;
+				}
+
+				if (x < width-1)
+					offset[y][x + 1] += offVal * 7 / 16;
+				if (y < height-1) {
+					if (x > 0)
+						offset[y + 1][x - 1] += offVal * 3 / 16;
+					offset[y + 1][x] += offVal * 5 / 16;
+					if (x < width-1)
+						offset[y + 1][x + 1] += offVal * 1 / 16;
+				}
+
+			}
+		}
+		return pixels;
+	}
+
 }

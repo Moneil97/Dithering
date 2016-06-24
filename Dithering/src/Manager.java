@@ -20,13 +20,20 @@ public class Manager {
 			System.exit(0);
 		}
 		
-		//Convert to BW w/ Simple Dithering then save
-		BufferedImage image = Tools.RGBArrayToImage(Dither.toBWSimpleDither(pixels));
+		//Convert to BW w/ Floyd-Steinberg Dithering then save
+		BufferedImage image = Tools.RGBArrayToImage(Dither.toBWFloydSteinbergDither(pixels));
 		try {
-			ImageIO.write(image, "jpg", new File("src/Media/imageBWSimpleDither.jpg"));
+			ImageIO.write(image, "jpg", new File("src/Media/imageBWFloydSteinbergDither.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+//		//Convert to BW w/ Simple Dithering then save
+//		BufferedImage image = Tools.RGBArrayToImage(Dither.toBWSimpleDither(pixels));
+//		try {
+//			ImageIO.write(image, "jpg", new File("src/Media/imageBWSimpleDither.jpg"));
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 		
 //		//Convert to Black and white then save
 //		BufferedImage image = Tools.RGBArrayToImage(Dither.toBW(pixels));
